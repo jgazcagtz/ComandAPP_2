@@ -633,6 +633,7 @@
     }
 
     // Declare variables in the same order as they will appear in the orderData object
+    const orderNumber = orderNumber;  // Ensure orderNumber is included here
     const tableNumber = document.getElementById('table-number').value || 'Sin número de mesa';
     const employeeName = document.getElementById('employee-name').value || 'Sin empleado';
     const orderItems = cart.map(item => `${item.name} (${item.quantity})`).join(', ');
@@ -674,6 +675,7 @@
         alert('Hubo un problema al guardar la orden en la nube.');
     });
 }
+
 
 
 
