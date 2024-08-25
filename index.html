@@ -298,12 +298,32 @@
             color: var(--primary-color);
         }
 
+        #save-cloud-btn {
+            padding: 10px 20px;
+            background-color: var(--secondary-color);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            text-align: center;
+            width: 100%;
+            margin-top: 15px;
+            font-weight: 700;
+            box-shadow: 0 4px 8px var(--shadow-color);
+        }
+
+        #save-cloud-btn:hover {
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+        }
+
         #cart-btn {
             position: fixed;
             bottom: 90px;
             right: 20px;
             background-color: var(--secondary-color);
-            color: var (--white);
+            color: var(--white);
             border: none;
             border-radius: 50%;
             width: 50px;
@@ -509,6 +529,7 @@
 
             <p><a id="whatsapp-btn" href="#" target="_blank" onclick="sendOrder()">Enviar orden a cocina</a></p>
             <button id="save-order-btn" onclick="saveOrder()">Guardar Orden</button>
+            <button id="save-cloud-btn" onclick="saveOrderToCloud()">Guardar en la Nube</button>
             <button id="edit-cart-btn" onclick="toggleModal()">Revisar Detalles</button>
             <button id="refresh-btn" onclick="clearCart()">Limpiar Orden</button>
             <button id="close-cart-btn" onclick="toggleCart()">Cerrar Carrito</button>
@@ -578,6 +599,30 @@
         }
 
         function saveOrder() {
+            const tableNumber = document.getElementById('table-number').value || 'Sin número de mesa';
+            const employeeName = document.getElementById('employee-name').value || 'Sin empleado';
+            const orderNotes = document.getElementById('order-notes').value || 'Sin notas adicionales';
+            const paymentMethod = document.querySelector('input[name="payment-method"]:checked')?.value || 'Sin especificar';
+            const orderItems = cart.map(item => `${item.name} (${item.quantity})`).join(', ');
+            const orderTotal = total.toFixed(2);
+            const timestamp = new Date().toLocaleString();
+
+            const orderData = {
+                orderNumber,
+                tableNumber,
+                employeeName,
+                orderItems,
+                orderTotal,
+                orderNotes,
+                paymentMethod,
+                timestamp
+            };
+
+            // Download the order summary as a .txt file
+            downloadOrderSummary(orderData);
+        }
+
+     function saveOrderToCloud() {
     const tableNumber = document.getElementById('table-number').value || 'Sin número de mesa';
     const employeeName = document.getElementById('employee-name').value || 'Sin empleado';
     const orderNotes = document.getElementById('order-notes').value || 'Sin notas adicionales';
@@ -597,11 +642,7 @@
         timestamp
     };
 
-    // Download the order summary as a .txt file
-    downloadOrderSummary(orderData);
-
-    // Send the order data to Google Sheets
-    fetch('https://script.google.com/macros/s/1hlz3a0iqhD4PsnQKRH-7ZEvGMz4IU0VB_Fii1a2W7MA/exec', {
+    fetch('https://script.google.com/macros/s/AKfycbzKmTqCBlscRKeJLXR3sgS6zYTtltRKqSCBHEJfabI/dev', {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -612,36 +653,36 @@
     .then(response => response.json())
     .then(data => {
         if (data.status === 'success') {
-            alert('Orden guardada con éxito!');
+            alert('Orden guardada en la nube con éxito!');
         } else {
-            alert('Hubo un problema al guardar la orden.');
+            alert('Hubo un problema al guardar la orden en la nube.');
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('Hubo un problema al guardar la orden.');
+        alert('Hubo un problema al guardar la orden en la nube.');
     });
 }
 
-function downloadOrderSummary(orderData) {
-    const orderSummary = `
-        Número de Orden: ${orderData.orderNumber}
-        Mesa: ${orderData.tableNumber}
-        Empleado: ${orderData.employeeName}
-        Artículos: ${orderData.orderItems}
-        Total: $${orderData.orderTotal}
-        Forma de Pago: ${orderData.paymentMethod}
-        Notas: ${orderData.orderNotes}
-        Timestamp: ${orderData.timestamp}
-    `;
 
-    const blob = new Blob([orderSummary], { type: 'text/plain' });
-    const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.download = `${orderData.orderNumber}.txt`;
-    link.click();
-}
+        function downloadOrderSummary(orderData) {
+            const orderSummary = `
+                Número de Orden: ${orderData.orderNumber}
+                Mesa: ${orderData.tableNumber}
+                Empleado: ${orderData.employeeName}
+                Artículos: ${orderData.orderItems}
+                Total: $${orderData.orderTotal}
+                Forma de Pago: ${orderData.paymentMethod}
+                Notas: ${orderData.orderNotes}
+                Timestamp: ${orderData.timestamp}
+            `;
 
+            const blob = new Blob([orderSummary], { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = `${orderData.orderNumber}.txt`;
+            link.click();
+        }
 
         window.createProductElement = function (product, layout = 'horizontal') {
             const productItem = document.createElement('div');
@@ -760,7 +801,7 @@ function downloadOrderSummary(orderData) {
             const employeeName = document.getElementById('employee-name').value || 'Sin empleado';
             const orderNotes = document.getElementById('order-notes').value || 'Sin notas adicionales';
             const paymentMethod = document.querySelector('input[name="payment-method"]:checked')?.value || 'Sin especificar';
-            const message = `Orden para cocina:\nOrden: ${orderNumber}\nMesa: ${tableNumber}\nEmpleado: ${employeeName}\n${cart.map(item => `${item.name} (${item.quantity})`).join('\n')}\n\nTotal de Productos: ${totalItems}\nForma de Pago: ${paymentMethod}\nNotas: ${orderNotes}`;
+            const message = `Orden para cocina:\nOrden: ${orderNumber}\nMesa: ${tableNumber}\nEmpleado: ${employeeName}\nProductos:${cart.map(item => `${item.name} (${item.quantity})`).join('\n')}\n\nTotal de Productos: ${totalItems}\nForma de Pago: ${paymentMethod}\nNotas: ${orderNotes}`;
             const encodedMessage = encodeURIComponent(message);
             whatsappBtn.href = `https://wa.me/525533355687?text=${encodedMessage}`;
             whatsappBtn.style.display = totalItems > 0 ? 'inline-block' : 'none';
