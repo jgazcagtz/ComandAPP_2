@@ -223,19 +223,23 @@
             font-size: 0.9em;
         }
 
-        #whatsapp-btn {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: var(--secondary-color);
-            color: var(--white);
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.9em;
-            text-align: center;
-            width: 100%;
-            margin-top: 10px;
-        }
+       #whatsapp-btn {
+    display: block;
+    padding: 10px 20px;
+    background-color: var(--secondary-color);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    text-align: center;
+    width: 100%; /* Ensure it aligns with other buttons */
+    margin-top: 15px;
+    font-weight: 700;
+    box-shadow: 0 4px 8px var(--shadow-color);
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
 
         #whatsapp-btn:hover {
             background-color: var(--accent-color);
@@ -294,26 +298,6 @@
         }
 
         #save-order-btn:hover {
-            background-color: var(--accent-color);
-            color: var(--primary-color);
-        }
-
-        #save-cloud-btn {
-            padding: 10px 20px;
-            background-color: var(--secondary-color);
-            color: var(--white);
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1em;
-            text-align: center;
-            width: 100%;
-            margin-top: 15px;
-            font-weight: 700;
-            box-shadow: 0 4px 8px var(--shadow-color);
-        }
-
-        #save-cloud-btn:hover {
             background-color: var(--accent-color);
             color: var(--primary-color);
         }
@@ -504,70 +488,71 @@
     </header>
     <main>
         <div class="intro-section">
-            <p>1) Selecciona el botón "Crear Orden" en la parte inferior de esta página. </p>
+            <p>1) Selecciona el botón "Crear Orden". </p>
             <p>2) Selecciona los productos del menú y añádelos al carrito.</p>
-            <p>3) Cuando termines, revisa el pedido y envíalo a cocina por WhatsApp.</p>
-            <p> Puedes editar la orden con el botón "Revisar Detalles" así como agregar Notas en el carrito. </p>
+            <p>3) Revisa el pedido y envíalo a cocina.</p>
+            <p>4) Selecciona "Guardar Orden".</p>
+            <p> Puedes editar la orden con el botón "Revisar Detalles" así como agregar Notas adicionales. </p>
             <p>Si lo requieres, pide ayuda a tu supervisor para utilizar esta herramienta.</p>
-        </div>
-
-        <div id="cart">
-            <h3>🛒 Carrito</h3>
-            <div id="cart-items"></div>
-            <p id="cart-total">Total: $0.00</p>
-            <p>Número de Mesa:</p>
-            <input type="text" id="table-number" placeholder="Enter Table Number">
-            <p>Empleado:</p>
-            <input type="text" id="employee-name" placeholder="Enter Employee Name">
-            <p>Notas:</p>
-            <textarea id="order-notes" placeholder="Agrega notas adicionales..." oninput="updateWhatsAppLink()"></textarea>
-
-            <p>Forma de Pago:</p>
-            <label><input type="radio" name="payment-method" value="En línea" onchange="updateWhatsAppLink()"> En línea</label>
-            <label><input type="radio" name="payment-method" value="Efectivo" onchange="updateWhatsAppLink()"> Efectivo</label>
-            <label><input type="radio" name="payment-method" value="Transferencia" onchange="updateWhatsAppLink()"> Transferencia</label>
-
-            <p><a id="whatsapp-btn" href="#" target="_blank" onclick="sendOrder()">Enviar orden a cocina</a></p>
-            <button id="save-order-btn" onclick="saveOrder()">Guardar Orden</button>
-            <button id="save-cloud-btn" onclick="saveOrderToCloud()">Guardar en la Nube</button>
-            <button id="edit-cart-btn" onclick="toggleModal()">Revisar Detalles</button>
-            <button id="refresh-btn" onclick="clearCart()">Limpiar Orden</button>
-            <button id="close-cart-btn" onclick="toggleCart()">Cerrar Carrito</button>
-        </div>
-        <button id="cart-btn" onclick="toggleCart()">🛒</button>
-
-        <div class="menu-title-container">
-            <h2>⭐ Favoritos</h2>
-        </div>
-        <div id="menu-horizontal" class="horizontal-product-grid"></div>
-
-        <div class="menu-title-container">
-            <h2>🍲 Sopas</h2>
-        </div>
-        <div id="menu-vertical-sopas" class="vertical-product-grid"></div>
-
-        <div class="menu-title-container">
-            <h2>🍱 Platos Principales</h2>
-        </div>
-        <div id="menu-vertical-principales" class="vertical-product-grid"></div>
-
-        <div class="menu-title-container">
-            <h2>🍶 Especialidades</h2>
-        </div>
-        <div id="menu-vertical-especialidades" class="vertical-product-grid"></div>
-
-        <div class="menu-title-container">
-            <h2>🍨 Postres</h2>
-        </div>
-        <div id="menu-vertical-postres" class="vertical-product-grid"></div>
-
-        <button id="create-order-btn" onclick="createOrder()">Crear Orden</button>
+            <button id="create-order-btn" onclick="createOrder()">📝 CREAR ORDEN</button>
     </main>
+    </div>
+
+    <div id="cart">
+        <h3>🛒 Carrito</h3>
+        <div id="cart-items"></div>
+        <p id="cart-total">Total: $0.00</p>
+        <p>Número de Mesa:</p>
+        <input type="text" id="table-number" placeholder="Enter Table Number">
+        <p>Empleado:</p>
+        <input type="text" id="employee-name" placeholder="Enter Employee Name">
+        <p>Notas:</p>
+        <textarea id="order-notes" placeholder="Agrega notas adicionales..." oninput="updateWhatsAppLink()"></textarea>
+
+        <p>Forma de Pago:</p>
+        <label><input type="radio" name="payment-method" value="En línea" onchange="updateWhatsAppLink()"> En línea</label>
+        <label><input type="radio" name="payment-method" value="Efectivo" onchange="updateWhatsAppLink()"> Efectivo</label>
+        <label><input type="radio" name="payment-method" value="Transferencia" onchange="updateWhatsAppLink()"> Transferencia</label>
+
+        <p><a id="whatsapp-btn" href="#" target="_blank" onclick="sendOrder()">👩‍🍳 ENVIAR ORDEN A COCINA</a></p>
+        <button id="save-order-btn" onclick="saveOrder()">💾 Guardar Orden</button>
+        <button id="edit-cart-btn" onclick="toggleModal()">Editar Orden</button>
+        <button id="refresh-btn" onclick="clearCart()">Limpiar Orden</button>
+        <button id="close-cart-btn" onclick="toggleCart()">Cerrar Carrito</button>
+    </div>
+    <button id="cart-btn" onclick="toggleCart()">🛒</button>
+
+    <div class="menu-title-container">
+        <h2>⭐ Favoritos</h2>
+    </div>
+    <div id="menu-horizontal" class="horizontal-product-grid"></div>
+
+    <div class="menu-title-container">
+        <h2>🍲 Sopas</h2>
+    </div>
+    <div id="menu-vertical-sopas" class="vertical-product-grid"></div>
+
+    <div class="menu-title-container">
+        <h2>🍱 Platos Principales</h2>
+    </div>
+    <div id="menu-vertical-principales" class="vertical-product-grid"></div>
+
+    <div class="menu-title-container">
+        <h2>🍶 Especialidades</h2>
+    </div>
+    <div id="menu-vertical-especialidades" class="vertical-product-grid"></div>
+
+    <div class="menu-title-container">
+        <h2>🍨 Postres</h2>
+    </div>
+    <div id="menu-vertical-postres" class="vertical-product-grid"></div>
+
+
 
     <div id="edit-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Detalles de la Orden</h2>
+                <h2>Editar Orden</h2>
                 <span class="close" onclick="toggleModal()">&times;</span>
             </div>
             <div class="modal-body" id="edit-cart-items"></div>
@@ -606,10 +591,10 @@
             const orderItems = cart.map(item => `${item.name} (${item.quantity})`).join(', ');
             const orderTotal = total.toFixed(2);
             const timestamp = new Date().toLocaleString();
- if (!orderNumber) {
-        alert('Por favor, crea una orden antes de guardar.');
-        return;
-    }
+            if (!orderNumber) {
+                alert('Por favor, crea una orden antes de guardar.');
+                return;
+            }
             const orderData = {
                 orderNumber,
                 tableNumber,
@@ -624,60 +609,6 @@
             // Download the order summary as a .txt file
             downloadOrderSummary(orderData);
         }
-
-    function saveOrderToCloud() {
-    // Ensure the orderNumber is defined
-    if (!orderNumber) {
-        alert('Por favor, crea una orden antes de guardar.');
-        return;
-    }
-
-    // Declare variables in the same order as they will appear in the orderData object
-    const orderNumber = orderNumber;  // Ensure orderNumber is included here
-    const tableNumber = document.getElementById('table-number').value || 'Sin número de mesa';
-    const employeeName = document.getElementById('employee-name').value || 'Sin empleado';
-    const orderItems = cart.map(item => `${item.name} (${item.quantity})`).join(', ');
-    const orderTotal = total.toFixed(2);
-    const orderNotes = document.getElementById('order-notes').value || 'Sin notas adicionales';
-    const paymentMethod = document.querySelector('input[name="payment-method"]:checked')?.value || 'Sin especificar';
-    const timestamp = new Date().toLocaleString();
-
-    // Construct the orderData object with the same order
-    const orderData = {
-        orderNumber,  // This uses the global variable
-        tableNumber,
-        employeeName,
-        orderItems,
-        orderTotal,
-        orderNotes,
-        paymentMethod,
-        timestamp
-    };
-
-    fetch('https://script.google.com/macros/s/AKfycbwnQrvL-bv_HaTtz6SFD0E9OfVJ3XCDpnqQJaGIk22LWv5t_Hod2znO6glizCorpk7g/exec', { 
-        method: 'POST',               
-        mode: 'cors',                 
-        headers: {
-            'Content-Type': 'application/json'  
-        },
-        body: JSON.stringify(orderData)
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
-            alert('Orden guardada en la nube con éxito!');
-        } else {
-            alert('Hubo un problema al guardar la orden en la nube.');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Hubo un problema al guardar la orden en la nube.');
-    });
-}
-
-
-
 
         function downloadOrderSummary(orderData) {
             const orderSummary = `
