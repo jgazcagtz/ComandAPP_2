@@ -302,6 +302,26 @@
             color: var(--primary-color);
         }
 
+        #save-cloud-btn {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            text-align: center;
+            width: 100%;
+            margin-top: 15px;
+            font-weight: 700;
+            box-shadow: 0 4px 8px var(--shadow-color);
+        }
+
+        #save-cloud-btn:hover {
+            background-color: #0056b3;
+            color: var(--white);
+        }
+
         #cart-btn {
             position: fixed;
             bottom: 90px;
@@ -516,6 +536,7 @@
 
         <p><a id="whatsapp-btn" href="#" target="_blank" onclick="sendOrder()">👩‍🍳 ENVIAR ORDEN A COCINA</a></p>
         <button id="save-order-btn" onclick="saveOrder()">💾 Guardar Orden</button>
+        <button id="save-cloud-btn" onclick="saveToCloud()">☁️ Guardar en la nube</button>
         <button id="edit-cart-btn" onclick="toggleModal()">Editar Orden</button>
         <button id="refresh-btn" onclick="clearCart()">Limpiar Orden</button>
         <button id="close-cart-btn" onclick="toggleCart()">Cerrar Carrito</button>
@@ -546,8 +567,6 @@
         <h2>🍨 Postres</h2>
     </div>
     <div id="menu-vertical-postres" class="vertical-product-grid"></div>
-
-
 
     <div id="edit-modal" class="modal">
         <div class="modal-content">
@@ -627,6 +646,44 @@
             link.href = window.URL.createObjectURL(blob);
             link.download = `${orderData.orderNumber}.txt`;
             link.click();
+        }
+
+        function saveToCloud() {
+            const tableNumber = document.getElementById('table-number').value || 'Sin mesa';
+            const employeeName = document.getElementById('employee-name').value || 'Sin empleado';
+            const orderNotes = document.getElementById('order-notes').value || 'Sin notas adicionales';
+            const paymentMethod = document.querySelector('input[name="payment-method"]:checked')?.value || 'Sin especificar';
+            const orderItems = cart.map(item => `${item.name} (${item.quantity})`).join(', ');
+            const orderTotal = total.toFixed(2);
+            const timestamp = new Date().toLocaleString();
+            if (!orderNumber) {
+                alert('Por favor, crea una orden antes de guardar.');
+                return;
+            }
+            const orderData = {
+                orderNumber,
+                tableNumber,
+                employeeName,
+                orderItems,
+                orderTotal,
+                orderNotes,
+                paymentMethod,
+                timestamp
+            };
+
+            fetch('https://script.google.com/macros/s/AKfycbxIzbJ90jl_s5yJyYs-yrjVhJ9ia74dH5fu0_cDqO9e2dVgSw1kIW8z5E5pRziP4DYS/exec', {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(orderData)
+            }).then(response => {
+                alert('Orden guardada en la nube exitosamente.');
+            }).catch(error => {
+                alert('Error al guardar en la nube.');
+                console.error('Error:', error);
+            });
         }
 
         window.createProductElement = function (product, layout = 'horizontal') {
