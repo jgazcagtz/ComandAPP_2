@@ -606,7 +606,10 @@
             const orderItems = cart.map(item => `${item.name} (${item.quantity})`).join(', ');
             const orderTotal = total.toFixed(2);
             const timestamp = new Date().toLocaleString();
-
+ if (!orderNumber) {
+        alert('Por favor, crea una orden antes de guardar.');
+        return;
+    }
             const orderData = {
                 orderNumber,
                 tableNumber,
