@@ -625,17 +625,25 @@
             downloadOrderSummary(orderData);
         }
 
-     function saveOrderToCloud() {
+    function saveOrderToCloud() {
+    // Ensure the orderNumber is defined
+    if (!orderNumber) {
+        alert('Por favor, crea una orden antes de guardar.');
+        return;
+    }
+
+    // Declare variables in the same order as they will appear in the orderData object
     const tableNumber = document.getElementById('table-number').value || 'Sin número de mesa';
     const employeeName = document.getElementById('employee-name').value || 'Sin empleado';
-    const orderNotes = document.getElementById('order-notes').value || 'Sin notas adicionales';
-    const paymentMethod = document.querySelector('input[name="payment-method"]:checked')?.value || 'Sin especificar';
     const orderItems = cart.map(item => `${item.name} (${item.quantity})`).join(', ');
     const orderTotal = total.toFixed(2);
+    const orderNotes = document.getElementById('order-notes').value || 'Sin notas adicionales';
+    const paymentMethod = document.querySelector('input[name="payment-method"]:checked')?.value || 'Sin especificar';
     const timestamp = new Date().toLocaleString();
 
+    // Construct the orderData object with the same order
     const orderData = {
-        orderNumber,
+        orderNumber,  // This uses the global variable
         tableNumber,
         employeeName,
         orderItems,
@@ -645,11 +653,11 @@
         timestamp
     };
 
-    fetch('https://script.google.com/macros/s/AKfycbza1JCA-lCu98pcE2-8qOt-7h9VPh7lLorEWCIAZZfQEfp0O7qNyEqE1FQaP3A2c73o/exec', {
-        method: 'POST',
-        mode: 'cors',
+    fetch('https://script.google.com/macros/s/AKfycbza1JCA-lCu98pcE2-8qOt-7h9VPh7lLorEWCIAZZfQEfp0O7qNyEqE1FQaP3A2c73o/exec', { 
+        method: 'POST',               
+        mode: 'cors',                 
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json'  
         },
         body: JSON.stringify(orderData)
     })
@@ -666,6 +674,7 @@
         alert('Hubo un problema al guardar la orden en la nube.');
     });
 }
+
 
 
         function downloadOrderSummary(orderData) {
