@@ -584,7 +584,7 @@
         }
 
         function saveOrder() {
-            const tableNumber = document.getElementById('table-number').value || 'Sin número de mesa';
+            const tableNumber = document.getElementById('table-number').value || 'Sin mesa';
             const employeeName = document.getElementById('employee-name').value || 'Sin empleado';
             const orderNotes = document.getElementById('order-notes').value || 'Sin notas adicionales';
             const paymentMethod = document.querySelector('input[name="payment-method"]:checked')?.value || 'Sin especificar';
@@ -612,10 +612,10 @@
 
         function downloadOrderSummary(orderData) {
             const orderSummary = `
-                Número de Orden: ${orderData.orderNumber}
+                Orden: ${orderData.orderNumber}
                 Mesa: ${orderData.tableNumber}
                 Empleado: ${orderData.employeeName}
-                Artículos: ${orderData.orderItems}
+                Productos: ${orderData.orderItems}
                 Total: $${orderData.orderTotal}
                 Forma de Pago: ${orderData.paymentMethod}
                 Notas: ${orderData.orderNotes}
@@ -742,9 +742,9 @@
 
         window.updateWhatsAppLink = function () {
             const whatsappBtn = document.getElementById('whatsapp-btn');
-            const tableNumber = document.getElementById('table-number').value || 'Sin número de mesa';
+            const tableNumber = document.getElementById('table-number').value || 'Sin mesa';
             const employeeName = document.getElementById('employee-name').value || 'Sin empleado';
-            const orderNotes = document.getElementById('order-notes').value || 'Sin notas adicionales';
+            const orderNotes = document.getElementById('order-notes').value || 'Sin notas';
             const paymentMethod = document.querySelector('input[name="payment-method"]:checked')?.value || 'Sin especificar';
             const message = `Orden para cocina:\nOrden: ${orderNumber}\nMesa: ${tableNumber}\nEmpleado: ${employeeName}\nProductos:${cart.map(item => `${item.name} (${item.quantity})`).join('\n')}\n\nTotal de Productos: ${totalItems}\nForma de Pago: ${paymentMethod}\nNotas: ${orderNotes}`;
             const encodedMessage = encodeURIComponent(message);
